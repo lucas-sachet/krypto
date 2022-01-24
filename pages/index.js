@@ -1,14 +1,14 @@
 import styled from 'styled-components'
 import { useWeb3 } from '@3rdweb/hooks'
+import Dashboard from './Dashboard'
 
-export default function Home() {
+const Home = () => {
     const { address, connectWallet } = useWeb3()
 
   return (
     <Wrapper>
         {address ? (
-            // <Dashboard address={address} />
-            <div>{address}</div>
+            <Dashboard address={address} />
         ) : (
             <WalletConnect>
                 <Button onClick={() => connectWallet("injected")}>
@@ -23,7 +23,7 @@ export default function Home() {
     </Wrapper>
   )
 }
-
+export default Home;
 const Wrapper = styled.div`
     display: flex;
     height: 100vh;
