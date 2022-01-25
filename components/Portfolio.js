@@ -7,6 +7,7 @@ import Coin from './Coin';
 function Portfolio() {
     return (
         <Wrapper>
+            <Content>
             <PortfolioTable>
                 <TableItem>
                     <Title>Your Assets</Title>
@@ -31,6 +32,7 @@ function Portfolio() {
                     ))}</div>
                 </Table>
             </PortfolioTable>
+            </Content>
         </Wrapper>
         
     )
