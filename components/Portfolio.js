@@ -1,11 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { coins } from '../static/coins'
 import Coin from './Coin';
 import BalanceChart from './BalanceChart';
 
-function Portfolio() {
+function Portfolio({ thirdWebTokens, sanityTokens, walletAddress }) {
+    const [walletBalance, setWalletBalance] = useState(0);
+    //convert all tokens into USD
+    const tokenToUSD = {}
+    for (const token of sanityTokens) {
+        tokenToUSD[token.contractAddress] = Number(token.usdPrice)
+    }
+
+    useEffect(() => {
+        const calculateBalance = async () => {
+            let total = 0;
+            for await (const token of thirdWebTokens) {
+                const balance = await token.balanceOf(walletAddress)
+                total += Number(balance.displayValue) * tokenToUSD[token.address]
+            }
+            setWalletBalance(total);
+        }
+        return calculateBalance();
+    }, [thirdWebTokens, tokenToUSD, walletAddress]);
+    
+
     return (
         <Wrapper>
             <Content>
@@ -16,7 +36,7 @@ function Portfolio() {
                                 Portfolio balance
                             </BalanceTitle>
                             <BalanceValue>
-                                {`${'$' + 46000}`}
+                                {`${'$' + walletBalance.toLocaleString()}`}
                             </BalanceValue>
                         </Balance>
                     </div>
